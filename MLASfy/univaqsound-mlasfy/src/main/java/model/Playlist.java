@@ -124,7 +124,7 @@ public class Playlist implements Riproducibile, Ricercabile {
         return "Playlist{" +
                 "nome='" + nomePlaylist + '\'' +
                 ", brani=" + braniPlaylist.size() +
-                ", durataTotale=" + getDurata() + "s" +
+                ", durataTotale=" + getDurataTotale() + "s" +
                 '}';
     }
 }

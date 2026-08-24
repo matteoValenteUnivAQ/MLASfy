@@ -32,23 +32,23 @@ public class Utente {
 
     
 
-    // --- Gestione Playlist ---
+    //Gestione Playlist
 
     public void creaPlaylist(Playlist nuovaPlaylist) {
         if (nuovaPlaylist != null && !this.playlist.contains(nuovaPlaylist)) {
             this.playlist.add(nuovaPlaylist);
-        }
+        } //else con eccezzione
     }
 
     public boolean rimuoviPlaylist(Playlist playlistDaRimuovere) {
         return this.playlist.remove(playlistDaRimuovere);
     }
 
-    // --- Gestione Cronologia ---
+   
 
     
 
-    // --- Gestione Preferenze Musicali ---
+    //Gestione Preferenze Musicali
 
     public void aggiungiGenerePreferito(Genere genere) {
         if (genere != null && !this.preferenzeMusicali.contains(genere)) {
@@ -60,7 +60,9 @@ public class Utente {
         return this.preferenzeMusicali.remove(genere);
     }
 
-    // --- Getter e Setter ---
+    
+
+    // Getter e Setter
 
     public String getNome() {
         return nome;
