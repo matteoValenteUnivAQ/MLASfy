@@ -1,24 +1,18 @@
 package service;
 
+import model.Brano;
+import model.CodaDiRiproduzione.ModalitaRepeat;
+
 public interface CodaDiRiproduzioneService {
     
-    public void importaElemento(Riproducibile elemento);
+    void aggiungiBrano(Brano brano);
+    Brano prossimoBrano();
+    Brano branoPrecedente();
+    Brano getBranoCorrente();
     
-   public void play();
+    void setShuffle(boolean attivo);
+    void toggleShuffle();
     
-   public void pausa();
-    
-   public void stop();
-    
-    public void successivo();
-    
-    public void precedente();
-    
-    public void setShuffle(boolean shuffle);
-    
-    public void toggleShuffle();
-    
-    public void setRepeat(boolean repeat);
-    
-    public void toggleRepeat();
+    void setModalitaRepeat(ModalitaRepeat modalita);
+    void toggleRepeat();
 }

@@ -1,7 +1,9 @@
 package model;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-public class CodaDiRiproduzione {
+import service.CodaDiRiproduzioneService;
+public class CodaDiRiproduzione implements CodaDiRiproduzioneService {
     public enum ModalitaRepeat{
         NESSUNA,
         RIPETI_TUTTO,
@@ -15,8 +17,8 @@ public class CodaDiRiproduzione {
     private boolean modalitaShuffle;
 
     public CodaDiRiproduzione(List<Brano> braniIniziali) {
-        this.braniOriginali = braniIniziali;
-        this.codaBrani = braniIniziali;
+        this.braniOriginali = new ArrayList<>(braniIniziali);
+        this.codaBrani = new ArrayList<>(braniIniziali);
         this.indiceCorrente = 0;
         this.modalitaRepeat = ModalitaRepeat.NESSUNA;
         this.modalitaShuffle = false;
@@ -36,7 +38,7 @@ public class CodaDiRiproduzione {
             }
         } else {
             //Ripristiniamo l'ordine originale ritrovando la posizione del brano corrente
-            codaBrani = braniOriginali;
+            codaBrani = new ArrayList<>(braniOriginali);
             if(branoCorrente!=null){
                 indiceCorrente = codaBrani.indexOf(branoCorrente);
             }
@@ -114,7 +116,48 @@ public class CodaDiRiproduzione {
     public void setModalitaShuffle(boolean modalitaShuffle) {
         this.modalitaShuffle = modalitaShuffle;
     }
+// --- Implementazione metodi di CodaDiRiproduzioneService ---
 
+    @Override
+    public void aggiungiBrano(Brano brano) {
+        if (brano != null) {
+            this.braniOriginali.add(brano);
+            this.codaBrani.add(brano);
+        }
+    }
+
+    @Override
+    public Brano branoPrecedente() {
+        if (codaBrani.isEmpty()) return null;
+
+        if (indiceCorrente > 0) {
+            indiceCorrente--;
+        } else if (modalitaRepeat == ModalitaRepeat.RIPETI_TUTTO) {
+            indiceCorrente = codaBrani.size() - 1;
+        }
+        return getBranoCorrente();
+    }
+
+    @Override
+    public void toggleShuffle() {
+        setShuffle(!this.modalitaShuffle);
+    }
+
+    @Override
+    public void toggleRepeat() {
+        // Ruota ciclicamente tra le 3 modalità
+        switch (this.modalitaRepeat) {
+            case NESSUNA:
+                setModalitaRepeat(ModalitaRepeat.RIPETI_TUTTO);
+                break;
+            case RIPETI_TUTTO:
+                setModalitaRepeat(ModalitaRepeat.RIPETI_SINGOLO);
+                break;
+            case RIPETI_SINGOLO:
+                setModalitaRepeat(ModalitaRepeat.NESSUNA);
+                break;
+        }
+    }
 
     
 }
