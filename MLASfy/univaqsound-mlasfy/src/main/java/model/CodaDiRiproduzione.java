@@ -49,11 +49,18 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
     //Logica per andare al Brano successivo
     public Brano prossimoBrano(){
         if(codaBrani.isEmpty()){
+            //eccezione CodaVuotaException
             return null;
         }
+        if(getBranoCorrente()!=null){
+            getBranoCorrente().pause(); //mettiamo in pausa il brano corrente prima di passare al successivo
+        }
 
-        //1.Caso repeat singolo: rimaniamo sullo stesso brano
+        //1.Caso repeat singolo: rimaniamo sullo stesso brano e parte un nuovo conto di secondi
         if(modalitaRepeat==ModalitaRepeat.RIPETI_SINGOLO){
+            if(getBranoCorrente()!=null){
+                getBranoCorrente().play(); //riavviamo la riproduzione del brano corrente
+            }
         return getBranoCorrente();
         }
 
@@ -67,6 +74,9 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
                 //3.Caso nessun repeat: rimaniamo sull'ultimo brano
                 return null;
             }
+        }
+        if(getBranoCorrente()!=null){
+            getBranoCorrente().play(); //avviamo la riproduzione del nuovo brano corrente
         }
         return getBranoCorrente();
     }
@@ -130,11 +140,21 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
     @Override
     public Brano branoPrecedente() {
         if (codaBrani.isEmpty()) return null;
+        
+        //Chiudiamo il tracciamento del brano attuale prima di cambiare
+        if(getBranoCorrente()!=null){
+            getBranoCorrente().pause(); //mettiamo in pausa il brano corrente prima di passare al precedente
+        }
 
         if (indiceCorrente > 0) {
             indiceCorrente--;
         } else if (modalitaRepeat == ModalitaRepeat.RIPETI_TUTTO) {
             indiceCorrente = codaBrani.size() - 1;
+        }
+
+        if(getBranoCorrente()!=null){
+            getBranoCorrente().play(); //avviamo la riproduzione del nuovo brano corrente
+
         }
         return getBranoCorrente();
     }
@@ -166,6 +186,7 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
                 //logica JavaFX per riprodurre il brano
                 branoCorrente.play();
             }else{
+                //eccezione
                 System.out.println("Nessun brano da riprodurre.");
             }
     }
@@ -175,6 +196,7 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
             //logica JavaFX per mettere in pausa il brano
             branoCorrente.pause();
         }else{
+            //eccezione
             System.out.println("Nessun brano da mettere in pausa.");
         }
     }
