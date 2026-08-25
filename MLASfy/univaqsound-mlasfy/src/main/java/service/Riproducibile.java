@@ -1,7 +1,7 @@
 package service;
 
 public interface Riproducibile {
-    void play();
-    void pause();
-    int getDurataTotale();
+    public void play();
+    public void pause();
+    public int getDurataTotale();
 }

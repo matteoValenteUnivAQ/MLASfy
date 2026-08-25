@@ -3,7 +3,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import service.CodaDiRiproduzioneService;
-public class CodaDiRiproduzione implements CodaDiRiproduzioneService {
+import service.Riproducibile;
+public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibile {
     public enum ModalitaRepeat{
         NESSUNA,
         RIPETI_TUTTO,
@@ -157,6 +158,32 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService {
                 setModalitaRepeat(ModalitaRepeat.NESSUNA);
                 break;
         }
+    }
+
+    public void play(){
+            Brano branoCorrente=getBranoCorrente();
+            if(branoCorrente!=null){
+                //logica JavaFX per riprodurre il brano
+                branoCorrente.play();
+            }else{
+                System.out.println("Nessun brano da riprodurre.");
+            }
+    }
+    public void pause(){
+        Brano branoCorrente=getBranoCorrente();
+        if(branoCorrente!=null){
+            //logica JavaFX per mettere in pausa il brano
+            branoCorrente.pause();
+        }else{
+            System.out.println("Nessun brano da mettere in pausa.");
+        }
+    }
+    public int getDurataTotale(){
+        int durataTotale=0;
+        for(Brano brano:codaBrani){
+      durataTotale+=brano.getDurata();
+        }
+        return durataTotale;
     }
 
     

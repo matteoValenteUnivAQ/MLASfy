@@ -1,5 +1,5 @@
 package service;
 
 public interface Ricercabile {
-    boolean corrispondeA(String query);
+   public boolean corrispondeA(String query);
 }

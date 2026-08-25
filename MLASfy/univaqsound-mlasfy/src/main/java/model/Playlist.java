@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Objects;
 import service.Ricercabile;
 import service.Riproducibile;
+import service.PlaylistService;
 
 /**
  * Rappresenta una playlist creata da un utente.
  * Implementa Riproducibile per la durata totale e Ricercabile per la ricerca testuale.
  */
-public class Playlist implements Riproducibile, Ricercabile {
+public class Playlist implements Riproducibile, Ricercabile,PlaylistService {
 
     private String nomePlaylist;
     private String descrizione;
@@ -64,7 +65,7 @@ public class Playlist implements Riproducibile, Ricercabile {
 
     @Override
     public int getDurataTotale() {
-        // Uso degli Stream per calcolare la durata totale in secondi della playlist
+        
         return braniPlaylist.stream().mapToInt(Brano::getDurata).sum();
     }
 
@@ -126,5 +127,10 @@ public class Playlist implements Riproducibile, Ricercabile {
                 ", brani=" + braniPlaylist.size() +
                 ", durataTotale=" + getDurataTotale() + "s" +
                 '}';
+    }
+
+    public void dragDrop() {
+        // Logica per il drag and drop dei brani nella playlist con JavaFX
+        System.out.println("Drag and drop dei brani nella playlist: " + nomePlaylist);
     }
 }

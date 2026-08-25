@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import service.CatalogoService;
 
-public class Catalogo<T> {
+public class Catalogo<T> implements CatalogoService {
     private List<T> elementi;
 
     public Catalogo() {

@@ -22,4 +22,15 @@ public class ArtistaGruppo extends Artista {
     public void rimuoviComponente(ArtistaSolista artista) {
         this.componenti.remove(artista);
     }
+    public boolean corrispondeA(String query){
+        if(getNomeArte().toLowerCase().contains(query.toLowerCase())){
+            return true;
+        }
+        for(ArtistaSolista artista : componenti){
+            if(artista.getNomeArte().toLowerCase().contains(query.toLowerCase()) || artista.getNomeAnagrafico().toLowerCase().contains(query.toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
+import service.UtenteService;
 /**
  * Rappresenta un utente ascoltatore della piattaforma UnivaqSound.
  * Mantiene le informazioni anagrafiche, la lista delle playlist create,
  * la cronologia degli ascolti e le preferenze musicali (generi preferiti).
  */
-public class Utente {
+public class Utente implements UtenteService{
 
     private String nome;
     private String cognome;

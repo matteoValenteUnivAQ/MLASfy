@@ -2,8 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import service.Ricercabile;
 
-public abstract class Artista {
+public abstract class Artista implements Ricercabile {
     private String nomeArte;
     private String biografia;
     private Genere generePrincipale;
