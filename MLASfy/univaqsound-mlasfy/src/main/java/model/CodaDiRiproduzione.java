@@ -127,14 +127,14 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
     public void setModalitaShuffle(boolean modalitaShuffle) {
         this.modalitaShuffle = modalitaShuffle;
     }
-// --- Implementazione metodi di CodaDiRiproduzioneService ---
+//Implementazione metodi di CodaDiRiproduzioneService
 
     @Override
-    public void aggiungiBrano(Brano brano) {
+    public void aggiungiBrano(Brano brano)throws IllegalArgumentException {
         if (brano != null) {
             this.braniOriginali.add(brano);
             this.codaBrani.add(brano);
-        }
+        } throw new IllegalArgumentException("Brano non può essere null");
     }
 
     @Override

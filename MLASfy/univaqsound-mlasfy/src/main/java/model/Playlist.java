@@ -8,6 +8,7 @@ import java.util.Objects;
 import service.Ricercabile;
 import service.Riproducibile;
 import service.PlaylistService;
+import exceptions.BranoNonTrovatoException;
 
 /**
  * Rappresenta una playlist creata da un utente.
@@ -38,8 +39,12 @@ public class Playlist implements Riproducibile, Ricercabile,PlaylistService {
         }
     }
 
-    public boolean rimuoviBrano(Brano brano) {
-        return this.braniPlaylist.remove(brano);
+    public boolean rimuoviBrano(Brano brano)throws BranoNonTrovatoException {
+        if(braniPlaylist.contains(brano)){
+           return this.braniPlaylist.remove(brano);
+            
+        }
+         throw new BranoNonTrovatoException("Il brano non è presente nella playlist");
     }
 
     public void spostaBrano(int indiceOrigine, int indiceDestinazione) {

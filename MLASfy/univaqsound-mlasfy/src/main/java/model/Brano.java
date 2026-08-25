@@ -49,11 +49,11 @@ public class Brano implements Riproducibile, Ricercabile {
 
     //Implementazione di Riproducibile 
     @Override
-    public void play() {
-        // Logica simulata di riproduzione del singolo brano
-        System.out.println("Riproduzione in corso: " + titolo + " - " + album.getArtista().getNomeArte());
-        //inizio della riproduzione del brano, memorizzo l'istante di tempo in cui è iniziata la riproduzione
-        this.inizioRiproduzione=Instant.now();
+public void play() {
+ //Logica simulata di riproduzione del singolo brano
+System.out.println("Riproduzione in corso: " + titolo + " - " + album.getArtista().getNomeArte());
+    //inizio della riproduzione del brano, memorizzo l'istante di tempo in cui è iniziata la riproduzione
+    this.inizioRiproduzione=Instant.now();
     
     }
 
@@ -63,7 +63,7 @@ public class Brano implements Riproducibile, Ricercabile {
 
         if(this.inizioRiproduzione!=null){
             Duration durataAscoltata = Duration.between(this.inizioRiproduzione, Instant.now());
-            this.tempoAscoltoTotale = tempoAscoltoTotale.plus(durataAscoltata);
+            this.tempoAscoltoTotale = this.tempoAscoltoTotale.plus(durataAscoltata);
             //Faccio incrementare il numero di ascolti solo se il brano è stato ascoltato per almeno metà della sua durata
             if(durataAscoltata.getSeconds()>=this.durata/2){
                 incrementaNumeroAscolti();
@@ -81,7 +81,7 @@ public class Brano implements Riproducibile, Ricercabile {
         return this.durata;
     }
 
-    //Implementazione di Ricercabile
+    //Implementazione di Ricercabile, da rivedere
     @Override
     public boolean corrispondeA(String query) {
         String q = query.toLowerCase();

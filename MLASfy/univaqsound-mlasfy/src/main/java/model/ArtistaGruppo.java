@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import exceptions.ListaVuotaException;
 public class ArtistaGruppo extends Artista {
     private List<ArtistaSolista> componenti;
 
@@ -11,7 +11,10 @@ public class ArtistaGruppo extends Artista {
         this.componenti = new ArrayList<>();
     }
 
-    public List<ArtistaSolista> getComponenti() {
+    public List<ArtistaSolista> getComponenti()throws ListaVuotaException {
+        if(componenti.isEmpty()){
+            throw new ListaVuotaException("Il gruppo non ha componenti.");
+        }
         return componenti;
     }
 
