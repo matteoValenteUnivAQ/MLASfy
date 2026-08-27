@@ -20,9 +20,15 @@
 <dependency>
     <groupId>org.openjfx</groupId>
     <artifactId>javafx-controls</artifactId>
-    <version>28-ea+4</version>
-    <scope>compile</scope>
+    <version>21.0.8</version>
 </dependency>
+
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-fxml</artifactId>
+    <version>21.0.8</version>
+</dependency>
+
 </dependencies>
 
     <properties>
@@ -39,9 +45,10 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <mainClass>com.example.Main</mainClass>
+                    <mainClass>test.TestPlayerApp</mainClass>
                 </configuration>
             </plugin>
+            
         </plugins>
     </build>
 </project>

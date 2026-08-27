@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import service.CodaDiRiproduzioneService;
 import service.Riproducibile;
+import exceptions.BranoNonTrovatoException;
+import exceptions.ListaVuotaException;
 public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibile {
     public enum ModalitaRepeat{
         NESSUNA,
@@ -47,10 +49,9 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
     }
 
     //Logica per andare al Brano successivo
-    public Brano prossimoBrano(){
+    public Brano prossimoBrano()throws ListaVuotaException{
         if(codaBrani.isEmpty()){
-            //eccezione CodaVuotaException
-            return null;
+            throw new ListaVuotaException("La coda di riproduzione è vuota.");  
         }
         if(getBranoCorrente()!=null){
             getBranoCorrente().pause(); //mettiamo in pausa il brano corrente prima di passare al successivo
@@ -138,8 +139,10 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
     }
 
     @Override
-    public Brano branoPrecedente() {
-        if (codaBrani.isEmpty()) return null;
+    public Brano branoPrecedente()throws NullPointerException {
+        if (codaBrani.isEmpty()){
+            return null;
+        } //eccezioneCodaVuota
         
         //Chiudiamo il tracciamento del brano attuale prima di cambiare
         if(getBranoCorrente()!=null){
@@ -156,9 +159,10 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
             getBranoCorrente().play(); //avviamo la riproduzione del nuovo brano corrente
 
         }
-        return getBranoCorrente();
+        throw new NullPointerException();
     }
 
+//inverte lo shuffle della coda di riproduzione
     @Override
     public void toggleShuffle() {
         setShuffle(!this.modalitaShuffle);
@@ -180,30 +184,29 @@ public class CodaDiRiproduzione implements CodaDiRiproduzioneService,Riproducibi
         }
     }
 
-    public void play(){
+    public void play()throws BranoNonTrovatoException{
             Brano branoCorrente=getBranoCorrente();
             if(branoCorrente!=null){
                 //logica JavaFX per riprodurre il brano
                 branoCorrente.play();
             }else{
-                //eccezione
-                System.out.println("Nessun brano da riprodurre.");
+                throw new BranoNonTrovatoException("Nessun brano da riprodurre.");
             }
     }
-    public void pause(){
+    public void pause()throws BranoNonTrovatoException{
         Brano branoCorrente=getBranoCorrente();
         if(branoCorrente!=null){
             //logica JavaFX per mettere in pausa il brano
             branoCorrente.pause();
         }else{
-            //eccezione
-            System.out.println("Nessun brano da mettere in pausa.");
+            throw new BranoNonTrovatoException("Nessun brano da mettere in pausa.");
+            
         }
     }
-    public int getDurataTotale(){
-        int durataTotale=0;
+    public long getDurataTotale(){
+        long durataTotale=0;
         for(Brano brano:codaBrani){
-      durataTotale+=brano.getDurata();
+      durataTotale+=brano.getDurata().toSeconds();
         }
         return durataTotale;
     }

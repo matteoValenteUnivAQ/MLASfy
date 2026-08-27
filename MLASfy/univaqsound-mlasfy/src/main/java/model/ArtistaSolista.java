@@ -15,6 +15,7 @@ public class ArtistaSolista extends Artista {
     public void setNomeAnagrafico(String nomeAnagrafico) {
         this.nomeAnagrafico = nomeAnagrafico;
     }
+    //da rivedere per eccezione ARtistaNonTrovatoException
     public boolean corrispondeA(String query){
         return getNomeArte().toLowerCase().contains(query.toLowerCase()) || nomeAnagrafico.toLowerCase().contains(query.toLowerCase());
 

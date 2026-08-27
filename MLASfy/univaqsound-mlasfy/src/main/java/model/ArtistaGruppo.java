@@ -23,8 +23,15 @@ public class ArtistaGruppo extends Artista {
     }
 
     public void rimuoviComponente(ArtistaSolista artista) {
-        this.componenti.remove(artista);
+        if(componenti.contains(artista)){
+            this.componenti.remove(artista);
+        }else{
+            //eccezione ArtistaNonTrovatoException
+            System.out.println("L'artista non è presente nel gruppo.");
+        }
+        
     }
+    //da rivedere per ArtistaNonTrovatoException
     public boolean corrispondeA(String query){
         if(getNomeArte().toLowerCase().contains(query.toLowerCase())){
             return true;

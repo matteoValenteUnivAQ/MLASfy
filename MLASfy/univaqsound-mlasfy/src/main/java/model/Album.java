@@ -1,21 +1,22 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+import exceptions.ListaVuotaException;
 
-public class Album {
+public class Album  {
     private String titolo;
     private Artista artista;
-    private Date annoPubblicazione; // Gestito come data o intero 
+    private LocalDate dataPubblicazione; // Gestito come data 
     private Genere genere;
     private String copertina; // Percorso del file immagine
     private List<Brano> brani;
 
-    public Album(String titolo, Artista artista, Date annoPubblicazione, Genere genere, String copertina) {
+    public Album(String titolo, Artista artista, LocalDate dataPubblicazione, Genere genere, String copertina) {
         this.titolo = titolo;
         this.artista = artista;
-        this.annoPubblicazione = annoPubblicazione;
+        this.dataPubblicazione= dataPubblicazione;
         this.genere = genere;
         this.copertina = copertina;
         this.brani = new ArrayList<>();
@@ -30,8 +31,8 @@ public class Album {
     public Artista getArtista() { return artista; }
     public void setArtista(Artista artista) { this.artista = artista; }
 
-    public Date getAnnoPubblicazione() { return annoPubblicazione; }
-    public void setAnnoPubblicazione(Date annoPubblicazione) { this.annoPubblicazione = annoPubblicazione; }
+    public LocalDate getDataPubblicazione() { return this.dataPubblicazione; }
+    public void setDataPubblicazione(LocalDate dataPubblicazione) { this.dataPubblicazione = dataPubblicazione; }
 
     public Genere getGenere() { return genere; }
     public void setGenere(Genere genere) { this.genere=genere; }
@@ -40,13 +41,20 @@ public class Album {
     public void setCopertina(String copertina) { this.copertina = copertina; }
 
     public List<Brano> getBrani() { return brani; }
+    public void setBrani(List<Brano> brani){this.brani=brani;}
+
+    public LocalDate getdataPubblicazione(){return this.dataPubblicazione;}
+    
 
     public void aggiungiBrano(Brano brano) {
         this.brani.add(brano);
     }
 
     // Calcola la durata complessiva sommando la durata dei singoli brani (utile per le statistiche o viste dettagliate)
-    public int getDurataTotale() {
-        return brani.stream().mapToInt(Brano::getDurata).sum();
+    public int getDurataTotale()throws ListaVuotaException {
+        if(brani.isEmpty()){
+            throw new ListaVuotaException("L'album non contiene brani.");
+        }
+        return brani.stream().mapToInt(brano -> Math.toIntExact(brano.getDurata().toSeconds())).sum();
     }
 }

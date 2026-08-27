@@ -58,9 +58,11 @@ public class Playlist implements Riproducibile, Ricercabile,PlaylistService {
     // --- Implementazione dell'interfaccia Riproducibile ---
 
     @Override
-    public void play() {
+    public void play()throws BranoNonTrovatoException {
         // Logica di avvio della riproduzione della playlist
         System.out.println("Riproduzione della playlist: " + nomePlaylist);
+        CodaDiRiproduzione coda = new CodaDiRiproduzione(braniPlaylist);
+        coda.play(); // Avvia la riproduzione della coda di riproduzione in baso
     }
 
     @Override
@@ -69,9 +71,11 @@ public class Playlist implements Riproducibile, Ricercabile,PlaylistService {
     }
 
     @Override
-    public int getDurataTotale() {
+    public long getDurataTotale() {
         
-        return braniPlaylist.stream().mapToInt(Brano::getDurata).sum();
+        return braniPlaylist.stream()
+            .mapToLong(brano -> brano.getDurata().getSeconds())
+            .sum();
     }
 
     // --- Implementazione dell'interfaccia Ricercabile ---

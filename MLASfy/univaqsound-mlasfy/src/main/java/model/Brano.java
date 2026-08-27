@@ -3,10 +3,11 @@ import service.Ricercabile;
 import service.Riproducibile;
 import java.time.Duration;
 import java.time.Instant;
+import exceptions.ListaVuotaException;
 
 public class Brano implements Riproducibile, Ricercabile {
     private String titolo;
-    private int durata; // Espresso in secondi
+    private Duration durata;
     private String testo;
     private Genere genere;
     private Album album;
@@ -14,11 +15,14 @@ public class Brano implements Riproducibile, Ricercabile {
     private Duration tempoAscoltoTotale = Duration.ZERO; //un brano appena creato non ha ancora avuto tempo di ascolto, quindi inizializziamo a zero
     private long numeroAscolti = 0;//un brano appena creato non ha ancora avuto ascolti, quindi inizializziamo a zero
 
-    public Brano(String titolo, int durata, String testo, Genere genere, Album album) {
+    public Brano(String titolo, long durataInSecondi, String testo, Genere genere, Album album)throws ListaVuotaException {
         this.titolo = titolo;
-        this.durata = durata;
+        this.durata = Duration.ofSeconds(durataInSecondi);
         this.testo = testo;
         this.genere = genere;
+        if(album == null){
+            throw new ListaVuotaException("L'album non può essere nullo per un brano.");
+        }
         this.album = album;
         album.aggiungiBrano(this);
     }
@@ -35,8 +39,8 @@ public class Brano implements Riproducibile, Ricercabile {
     public String getTitolo() { return titolo; }
     public void setTitolo(String titolo) { this.titolo = titolo; }
 
-    public int getDurata() { return durata; }
-    public void setDurata(int durata) { this.durata = durata; }
+    public Duration getDurata() { return this.durata; }
+    public void setDurata(Duration durata) { this.durata = durata; }
 
     public String getTesto() { return testo; }
     public void setTesto(String testo) { this.testo = testo; }
@@ -56,6 +60,12 @@ System.out.println("Riproduzione in corso: " + titolo + " - " + album.getArtista
     this.inizioRiproduzione=Instant.now();
     
     }
+    //Per la classe PlayerBarController in metodo caricaBrano()
+    public String getDurataFormattata() {
+        long minuti = durata.toMinutes();
+        long secondi = durata.toSecondsPart(); // Prende i secondi rimanenti oltre i minuti
+        return String.format("%02d:%02d", minuti, secondi);
+    }
 
     @Override
     public void pause() {
@@ -65,7 +75,7 @@ System.out.println("Riproduzione in corso: " + titolo + " - " + album.getArtista
             Duration durataAscoltata = Duration.between(this.inizioRiproduzione, Instant.now());
             this.tempoAscoltoTotale = this.tempoAscoltoTotale.plus(durataAscoltata);
             //Faccio incrementare il numero di ascolti solo se il brano è stato ascoltato per almeno metà della sua durata
-            if(durataAscoltata.getSeconds()>=this.durata/2){
+            if(durataAscoltata.getSeconds()>=this.durata.toSeconds()/2){
                 incrementaNumeroAscolti();
             }
             this.inizioRiproduzione = null;
@@ -77,11 +87,11 @@ System.out.println("Riproduzione in corso: " + titolo + " - " + album.getArtista
     
 
     @Override
-    public int getDurataTotale() {
-        return this.durata;
+    public long getDurataTotale() {
+        return this.durata.toSeconds();
     }
 
-    //Implementazione di Ricercabile, da rivedere
+    // da rivedere per BranoNonTRoavtoException
     @Override
     public boolean corrispondeA(String query) {
         String q = query.toLowerCase();
